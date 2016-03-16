@@ -3,21 +3,25 @@ import java.util.*;
 
 public abstract class Dictionary {
 	
-	public List<RichWord>dizionario=new ArrayList<RichWord>();
+	private List<String>dizionario=new ArrayList<String>();
 
+	public abstract void loadDictionary();
 	
-	public abstract String loadDictionary();
+	public void aggiungiParola(String s){
+		dizionario.add(s);
+	}
 	
 	public List<RichWord> spellCheckText(List<String>inputTextList){
 		List<RichWord> ris=new ArrayList<RichWord>();
-		RichWord r;
+		
 		//Aggiungo la parola da input a ris come rW errata
 		//Dopo controllo se e' nel dizionario e nel caso metto
 		//true il suo stato
-		for(String s:inputTextList){
-			ris.add(r=new RichWord(s,false));
-			if(dizionario.contains(r))
-				r.setCorretto(true);			
+		for(String s:inputTextList){			
+			if(dizionario.contains(s))
+				ris.add(new RichWord(s,true));
+			else
+				ris.add(new RichWord(s,false));
 		}
 		return ris;
 	}
