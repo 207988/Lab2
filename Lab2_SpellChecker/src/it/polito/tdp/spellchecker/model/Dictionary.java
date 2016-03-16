@@ -3,7 +3,7 @@ import java.util.*;
 
 public abstract class Dictionary {
 	
-	private List<String>dizionario=new ArrayList<String>();
+	public List<String>dizionario=new ArrayList<String>();
 
 	public abstract void loadDictionary();
 	

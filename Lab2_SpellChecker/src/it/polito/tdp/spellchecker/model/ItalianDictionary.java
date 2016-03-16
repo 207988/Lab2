@@ -11,7 +11,7 @@ public class ItalianDictionary extends Dictionary {
 			BufferedReader br = new BufferedReader(fr);
 			String word;
 			while ((word = br.readLine()) != null) {
-				super.aggiungiParola(word);
+				super.aggiungiParola(word.toLowerCase());
 			}
 			br.close();
 		} catch (IOException e){
@@ -19,5 +19,13 @@ public class ItalianDictionary extends Dictionary {
 		}	
 			
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Italiano";
+	}
+	
+	
 
 }

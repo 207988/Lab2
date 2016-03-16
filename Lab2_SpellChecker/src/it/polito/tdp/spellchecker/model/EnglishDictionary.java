@@ -13,12 +13,20 @@ public class EnglishDictionary extends Dictionary {
 			BufferedReader br = new BufferedReader(fr);
 			String word;
 			while ((word = br.readLine()) != null) {
-				super.aggiungiParola(word);
+				super.aggiungiParola(word.toLowerCase());
 			}
 			br.close();
 		} catch (IOException e){
 				System.out.println("Errore nella lettura del file");
 		}		
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Inglese";
+	}
+	
+	
 
 }

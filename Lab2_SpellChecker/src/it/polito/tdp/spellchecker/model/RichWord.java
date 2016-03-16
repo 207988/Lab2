@@ -51,6 +51,12 @@ public class RichWord {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.parola+"-"+this.corretto;
+	}
+
 	
 	
 	
