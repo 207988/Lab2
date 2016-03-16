@@ -17,6 +17,7 @@ public abstract class Dictionary {
 		//Aggiungo la parola da input a ris come rW errata
 		//Dopo controllo se e' nel dizionario e nel caso metto
 		//true il suo stato
+		
 		for(String s:inputTextList){			
 			if(dizionario.contains(s))
 				ris.add(new RichWord(s,true));

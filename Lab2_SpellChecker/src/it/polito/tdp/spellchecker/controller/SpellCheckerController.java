@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 
 import it.polito.tdp.spellchecker.model.*;
+import it.polito.tdp.spellchecker.model.Dictionary;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,14 +21,11 @@ public class SpellCheckerController {
 	
 	public void setModel(ItalianDictionary ita,EnglishDictionary eng){
 		iD=ita;
-		eD=eng;
+		eD=eng;	
 		
-		List<String>temp=new ArrayList<String>();
-        temp.add(iD.toString());
-        temp.add(eD.toString());
-        
-        
-        cmbLang.getItems().addAll(temp);
+		cmbLang.getItems().add(iD);
+		cmbLang.getItems().add(eD);
+       
 	}
 
     @FXML
@@ -37,7 +35,7 @@ public class SpellCheckerController {
     private URL location;
 
     @FXML
-    private ComboBox<String> cmbLang;
+    private ComboBox<Dictionary> cmbLang;
 
     @FXML
     private TextArea txtIn;
@@ -64,6 +62,47 @@ public class SpellCheckerController {
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	
+    	txtOut.clear();    	
+    	List<String>elencoParole=new ArrayList<String>();
+    	List<RichWord>paroleCorrette=new ArrayList<RichWord>();
+    	//rimuove tutta la punteggiatura
+    	String s=txtIn.getText().replaceAll("\\p{Punct}", "");
+    	//separazione parole
+    	String sArray[]=s.split(" ");
+    	
+    	//carico il vettore in una lista
+    	if(sArray.length==0){
+    		lblErr.setText("Inserisci del testo da controllare");
+    		return;
+    	}else{
+    		for(int i=0;i<sArray.length;i++)
+    			elencoParole.add(sArray[i]);
+    	}   
+    	
+    	
+    	//controllo ortografico
+    	if(cmbLang.getValue()==iD){
+    		//DIZIONARIO ITALIANO
+    		iD.loadDictionary();
+    		paroleCorrette.addAll(iD.spellCheckText(elencoParole));
+    	}
+    	else{
+    		//DIZIONARIO INGLESE 
+    		eD.loadDictionary();
+    		paroleCorrette.addAll(eD.spellCheckText(elencoParole));
+    	}
+    	
+    	
+    	//assemblo stringa risultato e la stampo in txtOut
+    	//MANCA COLORE ROSSO PER PAROLE ERRATE
+    	for(RichWord r:paroleCorrette){
+    		if(r.isCorretto()==true)
+    			s+=(r.getParola()+" ");
+    		else
+    			s+=(r.getParola().toUpperCase()+" ");
+    	}
+    	txtOut.setText(s);
 
     }
 
