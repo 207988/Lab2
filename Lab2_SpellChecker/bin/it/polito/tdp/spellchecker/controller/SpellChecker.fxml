@@ -34,7 +34,7 @@
                   <Button fx:id="btnSpell" mnemonicParsing="false" onAction="#doSpellCheck" text="Spell Check" />
                </children>
             </HBox>
-            <TextFlow fx:id="txtOut" />
+            <TextFlow fx:id="txtOut" minHeight="100.0" />
             <HBox alignment="TOP_RIGHT" spacing="20.0">
                <children>
                   <Label fx:id="lblErr" text="Your text contains errors!">

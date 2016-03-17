@@ -22,7 +22,7 @@ public class SpellCheckerController {
 	
 	ItalianDictionary iD;	
 	EnglishDictionary eD;
-	Text t;
+	long time;
 	
 	public void setModel(ItalianDictionary ita,EnglishDictionary eng){
 		iD=ita;
@@ -30,6 +30,8 @@ public class SpellCheckerController {
 		
 		cmbLang.getItems().add(iD);
 		cmbLang.getItems().add(eD);
+		iD.loadDictionary();
+		eD.loadDictionary();
        
 	}
 
@@ -74,14 +76,12 @@ public class SpellCheckerController {
     	txtOut.getChildren().clear();
     	//exit no dizionario
     	if(cmbLang.getValue()==null){
-    		txtOut.getChildren().add(new Text("Seleziona un dizionario"));
-    		//txtOut.setText("Selezione un dizionario");
+    		txtOut.getChildren().add(new Text("Seleziona un dizionario"));    		
     		return;
     	}
     	//exit no testo input
     	if(txtIn.getText().compareTo("")==0){
-    		txtOut.getChildren().add(new Text("Inserisci del testo da controllare"));
-    		//txtOut.setText("Inserisci del testo da controllare");
+    		txtOut.getChildren().add(new Text("Inserisci del testo da controllare"));    		
     		return;
     	}
     	
@@ -101,26 +101,30 @@ public class SpellCheckerController {
     	}else{
     		for(int i=0;i<sArray.length;i++)
     			elencoParole.add(sArray[i].toLowerCase());
-    	}
+    	}   	
     	
-    	
-    	
+    	time=0;
     	//controllo ortografico
     	if(cmbLang.getValue()==iD){
-    		//DIZIONARIO ITALIANO
-    		iD.loadDictionary();
+    		//DIZIONARIO ITALIANO    		
+    		time=System.nanoTime();
     		paroleCorrette.addAll(iD.spellCheckText(elencoParole));
+    		time=System.nanoTime()-time;
     	}
     	else{
-    		//DIZIONARIO INGLESE 
-    		eD.loadDictionary();
+    		//DIZIONARIO INGLESE     		
+    		time=System.nanoTime();
     		paroleCorrette.addAll(eD.spellCheckText(elencoParole));
+    		time=System.nanoTime()-time;
     	}
     	
-    	s="";
-    	//assemblo stringa risultato e la stampo in txtOut
-    	//MANCA COLORE ROSSO PER PAROLE ERRATE
-    	/*for(RichWord r:paroleCorrette){
+    	lblTime.setText(String.format("Tempo richiesto: %fs", time/1e9));
+    	
+    	
+    	//CODICE TEXTAREA
+    	
+    	//s=""
+     	/*for(RichWord r:paroleCorrette){
     		if(r.isCorretto()==true)
     			s+=(r.getParola()+" ");
     		else{
@@ -129,22 +133,18 @@ public class SpellCheckerController {
     		}
     	}*/
     	
+    	//CODICE TEXTFLOW
     	for(RichWord r:paroleCorrette){
-		if(r.isCorretto()==true){
-			txtOut.getChildren().add(new Text((r.getParola()+" ")));
-			//s+=(r.getParola()+" ");
-		}
-		else{
-			Text t1 =new Text(r.getParola()+" ");
-			t1.setFill(Color.BLUE);
-			//t1.setText(r.getParola().toUpperCase()+" ");	
-			
-			//s+=(r.getParola().toUpperCase()+" ");
-			txtOut.getChildren().addAll(t1);
-			lblErr.setText("Your text contains errors");
-		}
-	}
-    	//txtOut.getChildren().clear();
+    		if(r.isCorretto()==true){
+    			txtOut.getChildren().add(new Text((r.getParola()+" ")));			
+    		}
+			else{
+				Text t1 =new Text(r.getParola()+" ");
+				t1.setFill(Color.BLUE);		
+				txtOut.getChildren().add(t1);
+				lblErr.setText("Your text contains errors");
+			}
+    	}    	
 
     }
 
@@ -156,13 +156,8 @@ public class SpellCheckerController {
         assert txtOut != null : "fx:id=\"txtOut\" was not injected: check your FXML file 'SpellChecker.fxml'.";
         assert lblErr != null : "fx:id=\"lblErr\" was not injected: check your FXML file 'SpellChecker.fxml'.";
         assert btnClear != null : "fx:id=\"btnClear\" was not injected: check your FXML file 'SpellChecker.fxml'.";
-        assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'SpellChecker.fxml'.";           
+        assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'SpellChecker.fxml'.";        
         
-        t=new Text("ciao");
-        t.setFill(Color.RED);        
-       
-       
-               
         lblErr.setText("");
         
     }
