@@ -18,7 +18,8 @@ public class EnglishDictionary extends Dictionary {
 			br.close();
 		} catch (IOException e){
 				System.out.println("Errore nella lettura del file");
-		}		
+		}
+		System.out.println(super.dizionario.get(51070));
 	}
 
 	@Override
